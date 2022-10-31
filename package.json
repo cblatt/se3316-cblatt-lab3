@@ -1,0 +1,22 @@
+{
+  "name": "se3316-cblatt-lab3",
+  "version": "1.0.0",
+  "description": "ReST API for accessing music metadata",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cblatt/se3316-cblatt-lab3.git"
+  },
+  "author": "Cameron Blatt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cblatt/se3316-cblatt-lab3/issues"
+  },
+  "homepage": "https://github.com/cblatt/se3316-cblatt-lab3#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
