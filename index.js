@@ -5,6 +5,7 @@ const router = express.Router();
 const fs = require('fs'); // importing file system module
 const csv = require('csvtojson'); // importing csv to json module
 const { type } = require('os');
+const { send } = require('process');
 
 // setting up front end
 app.use('/', express.static('static'));
@@ -48,7 +49,14 @@ csv().fromFile(tracksCSV)
                     break;
                 }
             }
-            res.send(trackIDs);
+            // if no matches are found, send response status and an error message
+            if(trackIDs.length == 0){
+                res.status(404).send('Track title or album name ' + titleOrAlbum + ' not found');
+            }
+            // if one or more matches are found, send the track IDs array
+            else{
+                res.send(trackIDs);
+            }
         }
         // if input is not NaN (input is a number) - treat as track ID and send track details for given ID
         else{ // input is a number - 
@@ -64,7 +72,6 @@ csv().fromFile(tracksCSV)
             else{
                 // if the given track ID does not match a track, send response status and an error message
                 res.status(404).send('Track ID ' + id + ' not found')
-                console.log(Number('1f'));
             }
         }
     });
@@ -110,6 +117,26 @@ csv().fromFile(albumsCSV)
 
 csv().fromFile(genresCSV)
 .then((genres) => {
+
+    // get all genre titles, IDs, and parent IDs
+    app.get('/api/genres', (req, res) => {
+        // array to hold the arrays containing genre name, ID, and parent ID
+        var allGenres = []
+
+        // looping through the genres array
+        for(var i=0; i<genres.length; i++){
+            // pushing an array of name, ID, and parent for each genre to allGenres array
+            allGenres.push([genres[i].title, genres[i].genre_id, genres[i].parent]);
+        }
+        // if no genres are found, send response status and an error message
+        if(allGenres.length == 0){
+            res.status(404).send('No genres found');
+        }
+        // if one or more genres are found, send the resulting array
+        else{
+            res.send(allGenres);
+        }
+    })
 
 });
 
