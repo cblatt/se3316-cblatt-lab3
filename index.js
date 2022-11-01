@@ -37,9 +37,12 @@ csv().fromFile(tracksCSV)
 
         // if input is NaN (input is a string) - treat as title/album and send track IDs for first 30 matches
         if(isNaN(id)){ 
+
             var trackIDs = [];
+
             // looping through tracks array
             for(var i=0; i<tracks.length; i++){
+
                 // if a matching track title or album title is found, push the track ID to the trackIDs array
                 if(tracks[i].track_title.toLowerCase().includes(titleOrAlbum.toLowerCase()) || tracks[i].album_title.toLowerCase().includes(titleOrAlbum.toLowerCase())){ 
                     trackIDs.push(tracks[i].track_id);
@@ -49,6 +52,7 @@ csv().fromFile(tracksCSV)
                     break;
                 }
             }
+
             // if no matches are found, send response status and an error message
             if(trackIDs.length == 0){
                 res.status(404).send('Track title or album name ' + titleOrAlbum + ' not found');
@@ -58,6 +62,7 @@ csv().fromFile(tracksCSV)
                 res.send(trackIDs);
             }
         }
+        
         // if input is not NaN (input is a number) - treat as track ID and send track details for given ID
         else{ // input is a number - 
             const track = tracks.find(tr => tr.track_id == id); 
@@ -75,6 +80,8 @@ csv().fromFile(tracksCSV)
             }
         }
     });
+
+
 });
 
 // parsing ARTISTS data to json array
@@ -82,27 +89,57 @@ csv().fromFile(tracksCSV)
 csv().fromFile(artistsCSV)
 .then((artists) => { 
 
-    // get list of artists
-    app.get('/api/artists', (req, res) => {
-        res.send(artists);
-    });
-    
-    // getting artist details given an artist ID
-    app.get('/api/artists/:artistId', (req, res) => {
-        const id = req.params.artistId;
-        const artist = artists.find(ar => ar.artist_id == id);
-        if(artist){
-            // if the given artist ID matches an artist, send an array containing the artist details
-            artistDetails = [];
-            artistDetails.push(artist.artist_name, artist.artist_members, artist.artist_location, 
-                artist.artist_associated_labels, artist.artist_contact, artist.artist_website)
-            res.send(artistDetails);
+    // get the artist details for given artist info
+    app.get('/api/artists/:artistInfo', (req, res) => {
+        
+        // if the artist info is NaN (string) - treat it as artist name and send artist IDs for matching artists
+        // if the artist info is a number - treat it as artist ID and send the artist details for the given ID
+
+        const name = req.params.artistInfo; // storing artist info as string (to be treated as name)
+        const id = Number(req.params.artistInfo); // storing artist info as number (to be treated as ID)
+
+        // if input is NaN (input is a string) - treat as artist name and send artist IDs for all matches
+        if(isNaN(id)){
+
+            var artistIDs = [];
+
+            // looping through artists array
+            for(var i=0; i<artists.length; i++){
+                // if a matching name is found, push the ID of the matching artist to the artist IDs array
+                if(artists[i].artist_name.toLowerCase().includes(name.toLowerCase())){
+                    artistIDs.push(artists[i].artist_id);
+                }
+            }
+            // if no matches are found, send response status and an error message
+            if(artistIDs.length == 0){
+                res.status(404).send('Artist name ' + name + ' not found');
+            }
+            // if one or more matches are found, send the artist IDs array
+            else{
+                res.send(artistIDs);
+            }
         }
+
+        // if the input is not NaN (input is a number) - treat as artist ID and send the artist details for the given ID
         else{
-            // if no match is found for the given artist ID, send the response status and an error message
-            res.status(404).send('Artist ID ' + id + ' not found');
+            const artist = artists.find(ar => ar.artist_id == id);
+
+            // if the given artist ID matches an artist, send an array containing the artist details
+            if(artist){
+                artistDetails = [];
+                artistDetails.push(artist.artist_name, artist.artist_members, artist.artist_location, 
+                    artist.artist_associated_labels, artist.artist_contact, artist.artist_website)
+                res.send(artistDetails);
+            }
+            // if no match is found for the given artist ID, send response status and an error message
+            else{
+                res.status(404).send('Artist ID ' + id + ' not found');
+            }
         }
+
     });
+
+   
     
 });
 
@@ -136,7 +173,7 @@ csv().fromFile(genresCSV)
         else{
             res.send(allGenres);
         }
-    })
+    });
 
 });
 
