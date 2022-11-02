@@ -1,0 +1,106 @@
+body{
+    background-color: #800020;
+}
+/*
+#topDiv{
+    background-color: blue;
+    width: 95%;
+    height: 100px;
+    margin: auto; 
+    margin-top: 25px;
+    border:4px solid green;
+    border-radius: 30px;
+}
+*/
+
+#topLeftDiv{
+    background-color: #f0ead6;
+    width: 575px;
+    height: 100px;
+    float: left;
+    margin-top: 15px;
+    margin-left: 15px;
+    /*margin-top: -5px;
+    margin-left: -5px;*/
+    border: 4px solid black;
+    border-radius: 30px;
+}
+
+#topRightDiv{
+    background-color: #f0ead6;
+    width: 780px;
+    height: 100px;
+    margin-top: 15px;
+    margin-right: 15px;
+    float: right;
+    border: 4px solid black;
+    border-radius: 30px;
+}
+
+#bottomLeftDiv{
+    background-color: #f0ead6;
+    width: 900px;
+    height: 580px;
+    float: left;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 15px;
+    border: 4px solid black;
+    border-radius: 30px;
+}
+
+#createListDiv{
+    background-color: #f0ead6;
+    width: 455px;
+    height: 100px;
+    float: right;
+    margin-top: 20px;
+    margin-bottom: 6px;
+    margin-right: 15px;
+    border: 4px solid black;
+    border-radius: 30px;
+}
+#addTracksDiv{
+    background-color: #f0ead6;
+    width: 455px;
+    height: 100px;
+    float: right;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    margin-right: 15px;
+    border: 4px solid black;
+    border-radius: 30px;
+}
+#deleteListDiv{
+    background-color: #f0ead6;
+    width: 455px;
+    height: 100px;
+    float: right;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    margin-right: 15px;
+    border: 4px solid black;
+    border-radius: 30px;
+}
+#getTracksDiv{
+    background-color: #f0ead6;
+    width: 455px;
+    height: 100px;
+    float: right;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    margin-right: 15px;
+    border: 4px solid black;
+    border-radius: 30px;
+}
+#getListInfoDiv{
+    background-color: #f0ead6;
+    width: 455px;
+    height: 100px;
+    float: right;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    margin-right: 15px;
+    border: 4px solid black;
+    border-radius: 30px;
+}
