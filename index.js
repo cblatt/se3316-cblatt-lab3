@@ -16,154 +16,86 @@ var artistsCSV = 'lab3-data/raw_artists.csv';
 var albumsCSV = 'lab3-data/raw_albums.csv';
 var genresCSV = 'lab3-data/genres.csv';
 
-// parsing TRACKS data to json array
-
-csv().fromFile(tracksCSV) 
-.then((tracks) => {  
-
-    // get list of tracks
-    app.get('/api/tracks', (req, res) => {
-        res.send(tracks);
-    })
-
-    // get track details for given track info
-    app.get('/api/tracks/:trackInfo', (req, res) => {
-
-        // if the track info is NaN (string), treat it as title or album and send track IDs for the first 30 matching tracks
-        // if the track info is a number, treat it as track ID and get track details for given ID
-        
-        const titleOrAlbum = req.params.trackInfo; // storing track info as string (to be treated as title or album)
-        const id = Number(req.params.trackInfo); // storing track info as a number (to be treated as ID)
-
-        // if input is NaN (input is a string) - treat as title/album and send track IDs for first 30 matches
-        if(isNaN(id)){ 
-
-            var trackIDs = [];
-
-            // looping through tracks array
-            for(var i=0; i<tracks.length; i++){
-
-                // if a matching track title or album title is found, push the track ID to the trackIDs array
-                if(tracks[i].track_title.toLowerCase().includes(titleOrAlbum.toLowerCase()) || tracks[i].album_title.toLowerCase().includes(titleOrAlbum.toLowerCase())){ 
-                    trackIDs.push(tracks[i].track_id);
-                }
-                // breaking from the loop once the track IDs array reaches 30
-                if(trackIDs.length == 30){
-                    break;
-                }
-            }
-
-            // if no matches are found, send response status and an error message
-            if(trackIDs.length == 0){
-                res.status(404).send('Track title or album name ' + titleOrAlbum + ' not found');
-            }
-            // if one or more matches are found, send the track IDs array
-            else{
-                res.send(trackIDs);
-            }
-        }
-
-        // if input is not NaN (input is a number) - treat as track ID and send track details for given ID
-        else{ // input is a number - 
-            const track = tracks.find(tr => tr.track_id == id); 
-            if(track){
-                // if the given track ID matches a track, send an array containing the track details
-                var trackDetails = [];
-                trackDetails.push(track.album_id, track.album_title, track.artist_id, track.artist_name, 
-                    track.tags, track.track_date_created, track.track_date_recorded, track.track_duration, 
-                    track.track_genres, track.track_number, track.track_title);
-                res.send(trackDetails);
-            }
-            else{
-                // if the given track ID does not match a track, send response status and an error message
-                res.status(404).send('Track ID ' + id + ' not found')
-            }
-        }
-    });
-
-
-});
-
-// parsing ARTISTS data to json array
-
-csv().fromFile(artistsCSV)
-.then((artists) => { 
-
-    // get the artist details for given artist info
-    app.get('/api/artists/:artistInfo', (req, res) => {
-        
-        // if the artist info is NaN (string) - treat it as artist name and send artist IDs for matching artists
-        // if the artist info is a number - treat it as artist ID and send the artist details for the given ID
-
-        const name = req.params.artistInfo; // storing artist info as string (to be treated as name)
-        const id = Number(req.params.artistInfo); // storing artist info as number (to be treated as ID)
-
-        // if input is NaN (input is a string) - treat as artist name and send artist IDs for all matches
-        if(isNaN(id)){
-
-            var artistIDs = [];
-
-            // looping through artists array
-            for(var i=0; i<artists.length; i++){
-                // if a matching name is found, push the ID of the matching artist to the artist IDs array
-                if(artists[i].artist_name.toLowerCase().includes(name.toLowerCase())){
-                    artistIDs.push(artists[i].artist_id);
-                }
-            }
-            // if no matches are found, send response status and an error message
-            if(artistIDs.length == 0){
-                res.status(404).send('Artist name ' + name + ' not found');
-            }
-            // if one or more matches are found, send the artist IDs array
-            else{
-                res.send(artistIDs);
-            }
-        }
-
-        // if the input is not NaN (input is a number) - treat as artist ID and send the artist details for the given ID
-        else{
-            const artist = artists.find(ar => ar.artist_id == id);
-
-            // if the given artist ID matches an artist, send an array containing the artist details
-            if(artist){
-                artistDetails = [];
-                artistDetails.push(artist.artist_name, artist.artist_members, artist.artist_location, 
-                    artist.artist_associated_labels, artist.artist_contact, artist.artist_website)
-                res.send(artistDetails);
-            }
-            // if no match is found for the given artist ID, send response status and an error message
-            else{
-                res.status(404).send('Artist ID ' + id + ' not found');
-            }
-        }
-
-    });
-
-   
+// search for tracks by track title
+// IM GONNA MAKE THIS ONLY SHOW THE TRACK NAMES THAT ARE FOUND IN THE SEARCH
+// SHOULD IT SHOW ALL OF THE INFO FOR THE TRACK? OR JUST THE TRACK NAMES THAT MATCH THE SEARCH?
+csv().fromFile(tracksCSV)
+.then((trackNames) => {
     
-});
+    app.get('/api/trackNames/:trackName', (req, res) => {
+        const name = req.params.trackName; // storing the track title that is being requested
+        var trackNamesArr = []; // array to hold the track titles matching the request
+        // looping through the tracks array
+        for(var i=0; i<trackNames.length; i++){ // if matches are found, push the track titles to the array
+            if(trackNames[i].track_title.toLowerCase().includes(name.toLowerCase())){
+                trackNamesArr.push(trackNames[i].track_title);
+            }
+        }
+        if(trackNamesArr.length == 0){ // if no matches are found, send status and an error message
+            res.status(404).send('Track title ' + name + ' not found');
+        }
+        else{ // if one or more matches are found, send the track names array
+            res.send(trackNamesArr);
+        }
+    })
+})
 
-// parsing ALBUMS data to json array
+// search for artists by artist name
+csv().fromFile(artistsCSV)
+.then((artistNames) => {
 
+    app.get('/api/artistNames/:artistName', (req, res) => {
+        const name = req.params.artistName; // storing the artist name that is being requested
+        var artistNamesArr = []; // array to hold the artist names matching the request
+        // looping through the artists array
+        for(var i=0; i<artistNames.length; i++){ // if matches are found, push the artist names to the array
+            if(artistNames[i].artist_name.toLowerCase().includes(name.toLowerCase())){
+                artistNamesArr.push(artistNames[i].artist_name);
+            }
+        }
+        if(artistNamesArr.length == 0){ // if no maches are found, send status and an error message
+            res.status(404).send('Artist name ' + name + ' not found');
+        }
+        else{ // if one or more matches are found, send the artist names array
+            res.send(artistNamesArr);
+        }
+
+    })
+})
+
+// search for albums by album name
 csv().fromFile(albumsCSV)
-.then((albums) => {
+.then((albumNames) => {
 
-});
+    app.get('/api/albumNames/:albumName', (req, res) => {
+        const name = req.params.albumName; // storing the album name that is being requested
+        var albumNamesArr = []; // array to hold the album names matching the request
+        // looping through the albums array
+        for(var i=0; i<albumNames.length; i++){ // if matches are found, push the album names to the array
+            if(albumNames[i].album_title.toLowerCase().includes(name.toLowerCase())){
+                albumNamesArr.push(albumNames[i].album_title);
+            }
+        }
+        if(albumNamesArr.length == 0){ // if no matches are found, send status and an error message
+            res.status(404).send('Album name ' + name + ' not found');
+        }
+        else{ // if one or more matches are found, send the album names array
+            res.send(albumNamesArr);
+        }
+    })
+})
 
-// parsing GENRES data to json array
-
+// get all genre titles, IDs, and parent IDs
 csv().fromFile(genresCSV)
-.then((genres) => {
+.then((genreDetails) => {
 
-    // get all genre titles, IDs, and parent IDs
-    app.get('/api/genres', (req, res) => {
+    app.get('/api/genreDetails', (req, res) => {
         // array to hold the arrays containing genre name, ID, and parent ID
         var allGenres = []
-
         // looping through the genres array
-        for(var i=0; i<genres.length; i++){
+        for(var i=0; i<genreDetails.length; i++){
             // pushing an array of name, ID, and parent for each genre to allGenres array
-            allGenres.push([genres[i].title, genres[i].genre_id, genres[i].parent]);
+            allGenres.push([genreDetails[i].title, genreDetails[i].genre_id, genreDetails[i].parent]);
         }
         // if no genres are found, send response status and an error message
         if(allGenres.length == 0){
@@ -175,6 +107,97 @@ csv().fromFile(genresCSV)
         }
     });
 
+});
+
+// get artist details for a given artist ID
+csv().fromFile(artistsCSV)
+.then((artistDetails) => {
+    
+    app.get('/api/artistDetails/:artistID', (req, res) => {
+        const id = req.params.artistID; // storing the artist ID that is being requested
+        const artist = artistDetails.find(ar => ar.artist_id == id); // finding the first artist that matches the requested artist ID
+        // if the given artist ID matches an artist, send an array containing the artist details
+        if(artist){
+            var artistDetailsArr = [];
+            artistDetailsArr.push(artist.artist_name, artist.artist_members, artist.artist_location, 
+                artist.artist_associated_labels, artist.artist_contact, artist.artist_website)
+            res.send(artistDetailsArr);
+        }
+        // if no match is found for the given artist ID, send response status and an error message
+        else{
+            res.status(404).send('Artist ID ' + id + ' not found');
+        }
+        
+    })
+});
+
+// get artist IDs for given artist name
+csv().fromFile(artistsCSV)
+.then((artistIDs) => {
+
+    app.get('/api/artistIDs/:artistName', (req, res) => {
+        const name = req.params.artistName; // storing the artist name that is being requested
+        var artistIDsArr = []; // array to hold the artist IDs that are being requested
+        // looping through the artists array
+        for(var i=0; i<artistIDs.length; i++){ // if matching artist names are found, push the artist IDs to the array
+            if(artistIDs[i].artist_name.toLowerCase().includes(name.toLowerCase())){
+                artistIDsArr.push(artistIDs[i].artist_id);
+            }
+        }
+        if(artistIDsArr.length == 0){ // if no matches are found, send status and an error message
+            res.status(404).send('Artist name ' + name + ' not found');
+        }
+        else{ // if one or more matches are found, send the artist IDs array
+            res.send(artistIDsArr);
+        }
+    })
+});
+
+// get track details for a given track ID
+csv().fromFile(tracksCSV)
+.then((trackDetails) => {
+    app.get('/api/trackDetails/:trackID', (req, res) => {
+        const id = req.params.trackID; // storing the track ID that is being requested
+        const track = trackDetails.find(tr => tr.track_id == id); // finding the first track that matches the requested track ID
+        // if the given track ID matches a track, send an array containing the track details
+        if(track){
+            var trackDetailsArr = [];
+            trackDetailsArr.push(track.album_id, track.album_title, track.artist_id, track.artist_name, 
+                track.tags, track.track_date_created, track.track_date_recorded, track.track_duration, 
+                track.track_genres, track.track_number, track.track_title);
+            res.send(trackDetailsArr);
+        }
+        // if no match is found for the given artist ID, send response status and an error message
+        else{
+            res.status(404).send('Track ID ' + id + ' not found');
+        }
+    })
+});
+
+// get first 30 track IDs for a given search matching the track title or album
+csv().fromFile(tracksCSV)
+.then((trackIDs) => {
+    app.get('/api/trackIDs/:trackOrAlbumTitle', (req, res) => {
+        const trackOrAlbum = req.params.trackOrAlbumTitle; // storing the track title or album that is being requested
+        var trackIDsArr = []; // array to hold the track IDs that are being requested
+        // looping through tracks array
+        for(var i=0; i<trackIDs.length; i++){
+            // if a matching track title or album title is found, push the track ID to the trackIDs array
+            if(trackIDs[i].track_title.toLowerCase().includes(trackOrAlbum.toLowerCase()) || trackIDs[i].album_title.toLowerCase().includes(trackOrAlbum.toLowerCase())){ 
+                trackIDsArr.push(trackIDs[i].track_id);
+            }
+            // breaking from the loop once the track IDs array reaches 30
+            if(trackIDsArr.length == 30){
+                break;
+            }
+        }
+        if(trackIDsArr.length == 0){ // if no matches are found, send response status and an error message
+            res.status(404).send('Track title or album name ' + trackOrAlbum + ' not found');
+        }
+        else{ // if one or more matches are found, send the track IDs array
+            res.send(trackIDsArr);
+        }
+    })
 });
 
 
