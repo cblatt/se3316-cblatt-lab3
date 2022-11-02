@@ -9,8 +9,33 @@
     <div id="topDiv">
         <div id="topLeftDiv">
 
+            <input type="text" id="searchTrackText" placeholder="Search by Track Name">
+            <input type="text" id="searchArtistText" placeholder="Search by Artist Name">
+            <input type="text" id="searchAlbumText" placeholder="Search by Album Name">
+
+            <input type="button" id="searchTrackBtn" value="Search for Track">
+            <input type="button" id="searchArtistBtn" value="Search for Artist">
+            <input type="button" id="searchAlbumBtn" value="Search for Album">
+
         </div>
         <div id="topRightDiv">
+
+            <span id="genreDetailsText">Get all genre details</span>
+            <span id="artistDetailsText">Get artist details</span>
+            <span id="artistIDsText">Get artist IDs</span>
+            <span id="trackDetailsText">Get track details</span>
+            <span id="trackIDsText">Get first 30 track IDs</span>
+
+            <input type="text" id="artistDetailsTextField" placeholder="Artist ID">
+            <input type="text" id="artistIDsTextField" placeholder="Artist Name">
+            <input type="text" id="trackDetailsTextField" placeholder="Track Title or Album">
+            <input type="text" id="trackIDsTextField" placeholder="Track ID">
+
+            <input type="button" id="genreDetailsBtn" value="Get genres">
+            <input type="button" id="artistDetailsBtn" value="Get artist">
+            <input type="button" id="artistIDsBtn" value="Get artist IDs">
+            <input type="button" id="trackDetailsBtn" value="Get track">
+            <input type="button" id="trackIDsBtn" value="Get track IDs">
 
         </div>
     </div>
@@ -21,17 +46,38 @@
         <div id="bottomRightDiv">
             <div id="createListDiv">
 
+                <span id="createListText">Create New List</span>
+                <br><input type="text" id="createListTextField" placeholder="New List Name">
+                <br><input type="button" id="createListBtn" value="Create List">
+
             </div>
             <div id="addTracksDiv">
+
+                <span id="addTracksText">Add Tracks to a List</span>
+                <br><span id="addTrackInstructions">Please enter track IDs separated by a comma and a space</span>
+                <br><input type="text" id="addTracksTrackID" placeholder="Tracks IDs">
+                <br><input type="text" id="addTracksListName" placeholder="List Name">
+                <br><input type="button" id="addTracksBtn" value="Save Tracks">
 
             </div>
             <div id="deleteListDiv">
 
+                <span id="deleteListText">Delete a List</span>
+                <br><input type="text" id="deleteListName" placeholder="List Name">
+                <br><input type="button" id="deleteListBtn" value="Delete List">
+
             </div>
             <div id="getTracksDiv">
 
+                <span id="getTrackIDsText">Get Track IDs in a List</span>
+                <br><input type="text" id="getTrackIDsTextField" placeholder="List Name">
+                <br><input type="button" id="getTrackIDsBtn" value="Get Track IDs">
+
             </div>
             <div id="getListInfoDiv">
+
+                <span id="getListInfoText">Get List Info</span>
+                <br><input type="button" id="getListInfoBtn" value="Get Info">
 
             </div>
         </div>

@@ -1,17 +1,12 @@
 body{
     background-color: #800020;
 }
-/*
-#topDiv{
-    background-color: blue;
-    width: 95%;
-    height: 100px;
-    margin: auto; 
-    margin-top: 25px;
-    border:4px solid green;
-    border-radius: 30px;
+
+br{
+    display: block;
+    content: "";
+    margin-top: 5px;
 }
-*/
 
 #topLeftDiv{
     background-color: #f0ead6;
@@ -20,8 +15,6 @@ body{
     float: left;
     margin-top: 15px;
     margin-left: 15px;
-    /*margin-top: -5px;
-    margin-left: -5px;*/
     border: 4px solid black;
     border-radius: 30px;
 }
@@ -52,55 +45,190 @@ body{
 #createListDiv{
     background-color: #f0ead6;
     width: 455px;
-    height: 100px;
+    height: 80px;
     float: right;
     margin-top: 20px;
     margin-bottom: 6px;
     margin-right: 15px;
     border: 4px solid black;
     border-radius: 30px;
+    text-align: center
 }
 #addTracksDiv{
     background-color: #f0ead6;
     width: 455px;
-    height: 100px;
+    height: 130px;
     float: right;
     margin-top: 6px;
     margin-bottom: 6px;
     margin-right: 15px;
     border: 4px solid black;
     border-radius: 30px;
+    text-align: center
 }
 #deleteListDiv{
     background-color: #f0ead6;
     width: 455px;
-    height: 100px;
+    height: 80px;
     float: right;
     margin-top: 6px;
     margin-bottom: 6px;
     margin-right: 15px;
     border: 4px solid black;
     border-radius: 30px;
+    text-align: center
 }
 #getTracksDiv{
     background-color: #f0ead6;
     width: 455px;
-    height: 100px;
+    height: 80px;
     float: right;
     margin-top: 6px;
     margin-bottom: 6px;
     margin-right: 15px;
     border: 4px solid black;
     border-radius: 30px;
+    text-align: center
 }
 #getListInfoDiv{
     background-color: #f0ead6;
     width: 455px;
-    height: 100px;
+    height: 55px;
     float: right;
     margin-top: 6px;
     margin-bottom: 6px;
     margin-right: 15px;
     border: 4px solid black;
     border-radius: 30px;
+    text-align: center
 }
+#searchTrackText{
+    float: left;
+    width: 170px;
+    height: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 15px;
+
+}
+#searchArtistText{
+    float: left;
+    width: 170px;
+    height: 20px;
+    margin-top: 15px;
+
+}
+#searchAlbumText{
+    float: right;
+    width: 170px;
+    height: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 15px;
+}
+#searchTrackBtn{
+    float: left;
+    width: 120px;
+    height: 20px;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 15px;
+}
+#searchArtistBtn{
+    float: left;
+    width: 120px;
+    height: 20px;
+    margin-left: 25px;
+    margin-top: 15px;
+}
+#searchAlbumBtn{
+    float: right;
+    width: 120px;
+    height: 20px;
+    margin-right: 40px;
+    margin-left: 40px;
+    margin-top: 15px;
+}
+
+#genreDetailsText{
+    float: left;
+    margin-top: 10px;
+    margin-left: 30px;
+    margin-right: 40px;
+}
+#artistDetailsText{
+    float: left;
+    margin-top: 10px;
+    margin-right: 40px;
+    
+}
+#artistIDsText{
+    float: left;
+    margin-top: 10px;
+    margin-right: 40px;
+    
+}
+#trackDetailsText{
+    float: left;
+    margin-top: 10px;
+    margin-right: 40px;
+    
+}
+#trackIDsText{
+    float: right;
+    margin-top: 10px;
+    margin-right: 30px;
+
+}
+
+#artistDetailsTextField{
+    float: left;
+    width: 90px;
+    margin-top: 5px;
+    margin-left: 205px;
+    margin-right: 35px;
+}
+#artistIDsTextField{
+    float: left;
+    width: 100px;
+    margin-top: 5px;
+    margin-right: 15px;
+}
+#trackDetailsTextField{
+    float: left;
+    width: 120px;
+    margin-top: 5px;
+}
+#trackIDsTextField{
+    float: right;
+    width: 120px;
+    margin-top: 5px;
+    margin-right: 35px;
+}
+
+#genreDetailsBtn{
+    float: left;
+    margin-top: -20px;
+    margin-left: 55px;
+    margin-right: 83px;
+}
+#artistDetailsBtn{
+    float: left;
+    margin-top: 5px;
+    margin-right: 55px;
+}
+#artistIDsBtn{
+    float: left;
+    margin-top: 5px;
+    margin-right: 50px;
+}
+#trackDetailsBtn{
+    float: left;
+    margin-top: 5px;
+}
+#trackIDsBtn{
+    float: right;
+    margin-top: 5px;
+    margin-right: 50px;
+}
+
