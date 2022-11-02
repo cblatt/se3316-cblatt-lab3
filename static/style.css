@@ -1,3 +1,4 @@
+/* General structure */
 body{
     background-color: #800020;
 }
@@ -17,6 +18,7 @@ br{
     margin-left: 15px;
     border: 4px solid black;
     border-radius: 30px;
+    position: relative;
 }
 
 #topRightDiv{
@@ -230,5 +232,21 @@ br{
     float: right;
     margin-top: 5px;
     margin-right: 50px;
+}
+
+
+/* dynamic search div */
+#searchDiv{
+    background-color: #f0ead6;
+    width: 1385px;
+    height: auto;
+    margin-left: 15px;
+    margin-right: 15px;
+    
+    border: 4px solid black;
+    border-radius: 30px;
+    position: fixed;
+    
+    
 }
 
