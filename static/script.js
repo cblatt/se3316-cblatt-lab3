@@ -15,12 +15,18 @@ function searchTrack(){
     var trackName = document.getElementById('searchTrackText').value;
 
     fetch('/api/trackNames/' + trackName)
-    .then(res => res.json()
+    .then(res => res.text() // gets response as a string
     .then(data => {
+
+        dataArr = data.split(';'); // splitting string response into an array
 
         searchList.appendChild(document.createTextNode('Tracks matching ' + trackName + ':'));
         searchList.appendChild(document.createElement('br'));
-        searchList.appendChild(document.createTextNode(data));
+        
+        for(var i=0; i<dataArr.length; i++){ // adding each track to the search list and skipping lines between tracks
+            searchList.appendChild(document.createTextNode(dataArr[i]));
+            searchList.appendChild(document.createElement('br'));
+        }
 
     }));
 }
@@ -32,12 +38,18 @@ function searchArtist(){
     var artistName = document.getElementById('searchArtistText').value;
 
     fetch('/api/artistNames/' + artistName)
-    .then(res => res.json()
+    .then(res => res.text()
     .then(data => {
+
+        dataArr = data.split(';'); // splitting string response into an array
 
         searchList.appendChild(document.createTextNode('Artists matching ' + artistName + ':'));
         searchList.appendChild(document.createElement('br'));
-        searchList.appendChild(document.createTextNode(data));
+        
+        for(var i=0; i<dataArr.length; i++){ // adding each artist to the search list and skipping lines between artists
+            searchList.appendChild(document.createTextNode(dataArr[i]));
+            searchList.appendChild(document.createElement('br'));
+        }
 
     }));
 }
@@ -49,12 +61,18 @@ function searchAlbum(){
     var albumName = document.getElementById('searchAlbumText').value;
 
     fetch('/api/albumNames/' + albumName)
-    .then(res => res.json()
+    .then(res => res.text()
     .then(data => {
+
+        dataArr = data.split(';'); // splitting string response into an array
 
         searchList.appendChild(document.createTextNode('Albums matching ' + albumName + ':'));
         searchList.appendChild(document.createElement('br'));
-        searchList.appendChild(document.createTextNode(data));
+        
+        for(var i=0; i<dataArr.length; i++){ // adding each album to the search list and skipping lines between albums
+            searchList.appendChild(document.createTextNode(dataArr[i]));
+            searchList.appendChild(document.createElement('br'));
+        }
 
     }));
 }
@@ -64,11 +82,18 @@ document.getElementById('searchAlbumBtn').addEventListener('click', searchAlbum)
 // get all available genre names, IDs, and parent IDs
 function getGenres(){
     fetch('/api/genreDetails')
-    .then(res => res.json()
+    .then(res => res.text()
     .then(data => {
+
+        dataArr = data.split(';')
+
         searchList.appendChild(document.createTextNode('All available genre names, IDs, and parent IDs:'));
         searchList.appendChild(document.createElement('br'));
-        searchList.appendChild(document.createTextNode(data));
+
+        for(var i=0; i<dataArr.length; i++){ // adding each genre to the search list and skipping lines between genres
+            searchList.appendChild(document.createTextNode(dataArr[i]));
+            searchList.appendChild(document.createElement('br'));
+        }
     }))
 }
 document.getElementById('genreDetailsBtn').addEventListener('click', clearSearchResults); // clearing search results when button is pressed
@@ -79,12 +104,18 @@ function getArtistDetails(){
     var artistID = document.getElementById('artistDetailsTextField').value;
 
     fetch('/api/artistDetails/' + artistID)
-    .then(res => res.json()
+    .then(res => res.text()
     .then(data => {
+
+        dataArr = data.split(';')
 
         searchList.appendChild(document.createTextNode('Artist details for artist ID ' + artistID + ':'));
         searchList.appendChild(document.createElement('br'));
-        searchList.appendChild(document.createTextNode(data));
+
+        for(var i=0; i<dataArr.length; i++){ // adding all artist details to the search list and skipping lines between artists
+            searchList.appendChild(document.createTextNode(dataArr[i]));
+            searchList.appendChild(document.createElement('br'));
+        }
 
     }))
 }
@@ -96,12 +127,18 @@ function getArtistIDs(){
     var artistName = document.getElementById('artistIDsTextField').value;
 
     fetch('/api/artistIDs/' + artistName)
-    .then(res => res.json()
+    .then(res => res.text()
     .then(data => {
+
+        dataArr = data.split(';')
 
         searchList.appendChild(document.createTextNode('Artist IDs matching artist name ' + artistName + ':'));
         searchList.appendChild(document.createElement('br'));
-        searchList.appendChild(document.createTextNode(data));
+
+        for(var i=0; i<dataArr.length; i++){ // adding each artist ID to the search list and skipping lines between IDs
+            searchList.appendChild(document.createTextNode(dataArr[i]));
+            searchList.appendChild(document.createElement('br'));
+        }
     }))
 }
 document.getElementById('artistIDsBtn').addEventListener('click', clearSearchResults); // clearing search results when button is pressed
@@ -112,12 +149,18 @@ function getTrackDetails(){
     var trackID = document.getElementById('trackDetailsTextField').value;
 
     fetch('/api/trackDetails/' + trackID)
-    .then(res => res.json()
+    .then(res => res.text()
     .then(data => {
+
+        dataArr = data.split(';')
 
         searchList.appendChild(document.createTextNode('Track details for track ID ' + trackID + ':'));
         searchList.appendChild(document.createElement('br'));
-        searchList.appendChild(document.createTextNode(data));
+
+        for(var i=0; i<dataArr.length; i++){ // adding all track details to the search list and skipping lines between tracks
+            searchList.appendChild(document.createTextNode(dataArr[i]));
+            searchList.appendChild(document.createElement('br'));
+        }
     }))
 }
 document.getElementById('trackDetailsBtn').addEventListener('click', clearSearchResults); // clearing search results when button is pressed
@@ -128,21 +171,22 @@ function getTrackIDs(){
     var trackOrAlbum = document.getElementById('trackIDsTextField').value;
 
     fetch('/api/trackIDs/' + trackOrAlbum)
-    .then(res => res.json()
+    .then(res => res.text()
     .then(data => {
+
+        dataArr = data.split(';')
 
         searchList.appendChild(document.createTextNode('Track IDs matching track title or album name ' + trackOrAlbum + ':'));
         searchList.appendChild(document.createElement('br'));
-        searchList.appendChild(document.createTextNode(data));
+
+        for(var i=0; i<dataArr.length; i++){ // adding all track IDs to the search list and skipping lines between tracks
+            searchList.appendChild(document.createTextNode(dataArr[i]));
+            searchList.appendChild(document.createElement('br'));
+        }
     }))
 }
 document.getElementById('trackIDsBtn').addEventListener('click', clearSearchResults); // clearing search results when button is pressed
 document.getElementById('trackIDsBtn').addEventListener('click', getTrackIDs); // getting first 30 track IDs for given track title or album
-
-
-
-// FOR ALL THE ABOVE FUNCTIONS, NEED TO MAKE IT SO THAT IT DISPLAYS '... NOT FOUND' WHEN YOUR INPUT IS NOT FOUND
-// RIGHT NOW IT DOES NOT DISPLAY ANYTHING
 
 
 

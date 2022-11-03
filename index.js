@@ -34,8 +34,13 @@ csv().fromFile(tracksCSV)
         if(trackNamesArr.length == 0){ // if no matches are found, send status and an error message
             res.status(404).send('Track title ' + name + ' not found');
         }
-        else{ // if one or more matches are found, send the track names array
-            res.send(trackNamesArr);
+        else{ // if one or more matches are found, send the track names string
+            var trackNamesStr = ''
+            for(var i=0; i<trackNamesArr.length; i++){
+                trackNamesStr += trackNamesArr[i] + ';'; // string containing track names, separated by commas
+            }
+            res.send(trackNamesStr);
+            
         }
     })
 })
@@ -56,8 +61,12 @@ csv().fromFile(artistsCSV)
         if(artistNamesArr.length == 0){ // if no maches are found, send status and an error message
             res.status(404).send('Artist name ' + name + ' not found');
         }
-        else{ // if one or more matches are found, send the artist names array
-            res.send(artistNamesArr);
+        else{ // if one or more matches are found, send the artist names string
+            var artistNamesStr = '';
+            for(var i=0; i<artistNamesArr.length; i++){
+                artistNamesStr += artistNamesArr[i] + ';'; // string containing artist names, separated by commas
+            }
+            res.send(artistNamesStr);
         }
 
     })
@@ -79,8 +88,12 @@ csv().fromFile(albumsCSV)
         if(albumNamesArr.length == 0){ // if no matches are found, send status and an error message
             res.status(404).send('Album name ' + name + ' not found');
         }
-        else{ // if one or more matches are found, send the album names array
-            res.send(albumNamesArr);
+        else{ // if one or more matches are found, send the album names string
+            var albumNamesStr = '';
+            for(var i=0; i<albumNamesArr.length; i++){
+                albumNamesStr += albumNamesArr[i] + ';'; // string containing album names, separated by commas
+            }
+            res.send(albumNamesStr);
         }
     })
 })
@@ -91,17 +104,17 @@ csv().fromFile(genresCSV)
 
     app.get('/api/genreDetails', (req, res) => {
         // array to hold the arrays containing genre name, ID, and parent ID
-        var allGenres = []
+        var allGenres = ''
         // looping through the genres array
         for(var i=0; i<genreDetails.length; i++){
             // pushing an array of name, ID, and parent for each genre to allGenres array
-            allGenres.push([genreDetails[i].title, genreDetails[i].genre_id, genreDetails[i].parent]);
+            allGenres += ('Name: ' + genreDetails[i].title + ', ID: ' + genreDetails[i].genre_id + ', Parent ID: ' + genreDetails[i].parent + ';');
         }
         // if no genres are found, send response status and an error message
         if(allGenres.length == 0){
             res.status(404).send('No genres found');
         }
-        // if one or more genres are found, send the resulting array
+        // if one or more genres are found, send the resulting string
         else{
             res.send(allGenres);
         }
@@ -119,9 +132,14 @@ csv().fromFile(artistsCSV)
         // if the given artist ID matches an artist, send an array containing the artist details
         if(artist){
             var artistDetailsArr = [];
-            artistDetailsArr.push(artist.artist_name, artist.artist_members, artist.artist_location, 
-                artist.artist_associated_labels, artist.artist_contact, artist.artist_website)
-            res.send(artistDetailsArr);
+            artistDetailsArr.push('Name: ' + artist.artist_name,'Members: ' + artist.artist_members, 'Location: ' + artist.artist_location,  
+                'Labels: ' + artist.artist_associated_labels, 'Contact: ' + artist.artist_contact, 'Website: ' + artist.artist_website);
+
+            var artistDetailsStr = '';
+            for(var i=0; i<artistDetailsArr.length; i++){
+                artistDetailsStr += artistDetailsArr[i] + ';';
+            }
+            res.send(artistDetailsStr);
         }
         // if no match is found for the given artist ID, send response status and an error message
         else{
@@ -137,18 +155,18 @@ csv().fromFile(artistsCSV)
 
     app.get('/api/artistIDs/:artistName', (req, res) => {
         const name = req.params.artistName; // storing the artist name that is being requested
-        var artistIDsArr = []; // array to hold the artist IDs that are being requested
+        var artistIDsStr = ''; // array to hold the artist IDs that are being requested
         // looping through the artists array
         for(var i=0; i<artistIDs.length; i++){ // if matching artist names are found, push the artist IDs to the array
             if(artistIDs[i].artist_name.toLowerCase().includes(name.toLowerCase())){
-                artistIDsArr.push(artistIDs[i].artist_id);
+                artistIDsStr += (artistIDs[i].artist_id + ';');
             }
         }
-        if(artistIDsArr.length == 0){ // if no matches are found, send status and an error message
+        if(artistIDsStr.length === 0){ // if no matches are found, send status and an error message
             res.status(404).send('Artist name ' + name + ' not found');
         }
         else{ // if one or more matches are found, send the artist IDs array
-            res.send(artistIDsArr);
+            res.send(artistIDsStr);
         }
     })
 });
@@ -162,10 +180,15 @@ csv().fromFile(tracksCSV)
         // if the given track ID matches a track, send an array containing the track details
         if(track){
             var trackDetailsArr = [];
-            trackDetailsArr.push(track.album_id, track.album_title, track.artist_id, track.artist_name, 
-                track.tags, track.track_date_created, track.track_date_recorded, track.track_duration, 
-                track.track_genres, track.track_number, track.track_title);
-            res.send(trackDetailsArr);
+            trackDetailsArr.push('Album ID: ' + track.album_id, 'Album Title: ' + track.album_title, 'Artist ID: ' + track.artist_id, 'Artist Name: ' + track.artist_name,  
+                'Track Tags: ' + track.tags, 'Date Created: ' + track.track_date_created, 'Date Recorded: ' + track.track_date_recorded, 'Duration: ' + track.track_duration, 
+                'Genre: ' + track.track_genres, 'Track Number: ' + track.track_number, 'Track Title: ' + track.track_title);
+
+            var trackDetailsStr = '';
+            for(var i=0; i<trackDetailsArr.length; i++){
+                trackDetailsStr += trackDetailsArr[i] + ';';
+            }
+            res.send(trackDetailsStr);
         }
         // if no match is found for the given artist ID, send response status and an error message
         else{
@@ -194,8 +217,12 @@ csv().fromFile(tracksCSV)
         if(trackIDsArr.length == 0){ // if no matches are found, send response status and an error message
             res.status(404).send('Track title or album name ' + trackOrAlbum + ' not found');
         }
-        else{ // if one or more matches are found, send the track IDs array
-            res.send(trackIDsArr);
+        else{ // if one or more matches are found, send the track IDs string
+            var trackIDsStr = '';
+            for(var i=0; i<trackIDsArr.length; i++){
+                trackIDsStr += trackIDsArr[i] + ';';
+            }
+            res.send(trackIDsStr);
         }
     })
 });
