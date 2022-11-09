@@ -222,16 +222,23 @@ csv().fromFile(tracksCSV)
 });
 
 // get names of all lists, number of tracks in each list, and total duration of each list
-csv().fromFile(tracksCSV)
-.then((tracks2) => {
 
-        app.get('/playlists/allLists', (req, res) => {
+
+app.get('/playlists/allLists', (req, res) => {
             
-        })
+    const data = db.get('playlists');
+    const dataArr = data.value();
 
+    var listsInfo = '';
 
+    for(var i=0; i<dataArr.length; i++){
+        listsInfo += 'List Name: ' + dataArr[i].name + ', ' + 'Number of Tracks: ' + dataArr[i].trackIDs.length + ';';
+    }
 
-});
+    res.send(listsInfo)
+
+})
+
 
 
 

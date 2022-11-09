@@ -364,6 +364,43 @@ function clearList(){
 document.getElementById('displayListButton').addEventListener('click', clearList);
 document.getElementById('displayListButton').addEventListener('click', getListInfo);
 
+// get list all list names and number of tracks in each list
+function getAllLists(){
+
+    fetch('/playlists/allLists', {
+        method: 'GET',
+        headers: {'Content-type': 'application/json'}
+    })
+    .then(res => {
+        if(res.ok){
+            res.text()
+            .then(data => {
+
+                var allListsArr = data.split(';'); // this will make array of strings with the list info
+                
+                
+
+                for(var i=0; i<allListsArr.length; i++){
+                    searchList.appendChild(document.createTextNode(allListsArr[i]));
+                    searchList.appendChild(document.createElement('br'));
+                }
+
+
+
+                
+
+
+            })
+            .catch(err => alert('failed to get json object'))
+        }
+        else{
+        }
+    })
+    .catch()
+
+}
+document.getElementById('getListInfoBtn').addEventListener('click', clearSearchResults); 
+document.getElementById('getListInfoBtn').addEventListener('click', getAllLists); 
 
 
 
