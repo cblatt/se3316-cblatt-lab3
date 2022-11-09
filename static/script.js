@@ -190,6 +190,126 @@ document.getElementById('trackIDsBtn').addEventListener('click', getTrackIDs); /
 
 
 
+// create a new playlist with a playlist name and an empty array of track IDs
+function createList(){
+
+    const newPlaylist = {
+        name: document.getElementById('createListTextField').value,
+        trackIDs: []
+    }
+    fetch('/playlists/new', {
+        method: 'POST',
+        headers: {'Content-type': 'application/json'},
+        body: JSON.stringify(newPlaylist)
+    })
+    .then(res => {
+        if(res.ok){
+            res.text()
+            .then(data => {
+
+
+                alert(data);
+
+
+            })
+            .catch(err => alert('failed to get json object'))
+        }
+        else{
+            alert('error: ' + res.status)
+        }
+    })
+    .catch()
+
+}
+document.getElementById('createListBtn').addEventListener('click', createList);
+
+// save a list of track IDs to a given list
+function addToList(){
+
+    var trackIDsArrStr = document.getElementById('addTracksTrackID').value.split(', ');
+    var trackIDsArr = trackIDsArrStr.map(Number);
+
+    const addTracks = {
+        trackIDs: trackIDsArr
+    }
+    fetch('/playlists/addTracks/' + document.getElementById('addTracksListName').value, {
+        method: 'PUT',
+        headers: {'Content-type': 'application/json'},
+        body: JSON.stringify(addTracks)
+    })
+    .then(res => {
+        if(res.ok){
+            res.text()
+            .then(data => {
+
+
+                alert(data);
+
+
+            })
+            .catch(err => alert('failed to get json object'))
+        }
+        else{
+            alert('error: ' + res.status)
+        }
+    })
+    .catch()
+
+}
+document.getElementById('addTracksBtn').addEventListener('click', addToList);
+
+// delete a list by name
+function deleteList(){
+    fetch('/playlists/delete/' + document.getElementById('deleteListName').value, {
+        method: 'DELETE',
+        headers: {'Content-type': 'application/json'}
+    })
+    .then(res => {
+        if(res.ok){
+            res.text()
+            .then(data => {
+
+
+                alert(data);
+
+
+            })
+            .catch(err => alert('failed to get json object'))
+        }
+        else{
+            alert('error: ' + res.status)
+        }
+    })
+    .catch()
+}
+document.getElementById('deleteListBtn').addEventListener('click', deleteList);
+
+// get the track IDs for a given list
+function getListTrackIDs(){
+    fetch('/playlists/trackIDs/' + document.getElementById('getTrackIDsTextField').value, {
+        method: 'GET',
+        headers: {'Content-type': 'application/json'}
+    })
+    .then(res => {
+        if(res.ok){
+            res.text()
+            .then(data => {
+
+
+                alert(data);
+
+
+            })
+            .catch(err => alert('failed to get json object'))
+        }
+        else{
+            alert('error: ' + res.status)
+        }
+    })
+    .catch()
+
+}
+document.getElementById('getTrackIDsBtn').addEventListener('click', getListTrackIDs);
 
 
 
