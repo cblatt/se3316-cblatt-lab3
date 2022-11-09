@@ -33,35 +33,133 @@ var genresCSV = 'lab3-data/genres.csv';
 const db = lowdb(new FileSync('db.json'));
 
 db.defaults({
-    lists: []
+    playlists: []
 }).write();
 
 app.use(cors());
 app.use(bodyparser.json());
 
-// here were getting the lists array (array of json objects)
-app.get('/lists', (req, res) => {
-    const data = db.get('lists').value();
+// get the playlists array (array of json objects)
+app.get('/playlists', (req, res) => {
+    const data = db.get('playlists').value();
     return res.json(data);
 });
 
-app.post('/lists/new', (req, res) => {
-    const data = db.get('lists');
-    const list = req.body;
-    db.data.push(list).write()
-    res.json({success: true})
-})
-// .write() saves your stuff to the file
 
-/*
-app.post('/lists/hello', (req, res) => {
-    const data = db.get('lists');
-    const list = req.body;
-    db.data.push(list).write();
-    res.json({success: true});
+// post a new playlist - add a new playlist to the playlists array by adding a playlist name and an empty array of track IDs
+app.post('/playlists/new', (req, res) => {
+    const data = db.get('playlists');
+    const dataArr = data.value();
     
+    const newPlaylist = req.body; // holds the new playlist (request body)
+
+    var matchingName; // boolean variable to tell whether the playlist already exists
+
+    // looping through the existing playlists
+    for(var i=0; i<dataArr.length; i++){
+        // if a matching playlist name already exists, set matchingName variable to true
+        if(newPlaylist.name == dataArr[i].name){
+            matchingName = true;
+            break;
+        }
+    }
+
+    // if there is a matching playlist name, send playlist already exists
+    if(matchingName){
+        res.send('playlist name already exists')
+    }
+    // if there is no matching playlist name, add the new playlist to the array, and send new playlist created
+    else{
+        data.push(newPlaylist).write();
+        res.send('new playlist created');
+    }
+});
+
+// adding track IDs to a playlist
+app.put('/playlists/addTracks/:playlist', (req, res) => {
+    const data = db.get('playlists');
+    const dataArr = data.value();
+
+    const playlist = req.params.playlist; // storing the name of the playlist to add the tracks to
+    const body = req.body; // storing the body
+    const trackIDsArr = body.trackIDs; // getting the array of track ids from the body of the request
+    
+    var matchingName;
+
+    
+    // looping through the existing playlists
+    for(var i=0; i<dataArr.length; i++){
+        // if a matching playlist is found, add the new tracks to the playlist
+        // if there are lready tracks in the playlist, replace them with the new tracks
+        if(playlist == dataArr[i].name){
+            matchingName = true;
+            dataArr[i].trackIDs = trackIDsArr;
+        }
+    }
+    data.write(dataArr); // write the changes to the data array
+    
+
+    // if there is a matching playlist, add the tracks to the playlist
+    if(matchingName){
+        res.send('playlist ' + playlist + ' updated');
+    }
+    else{
+        res.send('playlist ' + playlist + ' not found');
+    }
+});
+
+// delete a playlist by name
+app.delete('/playlists/delete/:playlist', (req, res) => {
+    const data = db.get('playlists');
+    const dataArr = data.value();
+
+    const playlist = req.params.playlist; // storing the playlist to delete
+
+    var matchingPlaylist;
+
+    // looping through the playlists array
+    for(var i=0; i<dataArr.length; i++){
+        // deleting the playlist corresponding to the given name
+        if(dataArr[i].name == playlist){
+            matchingPlaylist = true;
+            data.splice(i, 1).write();
+        }
+    }
+    // if a match is found, remove the playlist
+    if(matchingPlaylist){
+        res.send('removed playlist: ' + playlist);
+    }
+    // if no match is found, send playlist not found
+    else{
+        res.send('playlist' + playlist + ' not found');
+    }
+});
+
+// get a list of track IDs for a given list name
+app.get('/playlists/trackIDs/:playlist', (req, res) => {
+    const data = db.get('playlists');
+    const dataArr = data.value();
+
+    const playlist = req.params.playlist; // storing the playlist for which we want the track IDs
+
+    var trackIDs = []
+
+    var matchingPlaylist;
+
+    for(var i=0; i<dataArr.length; i++){
+        if(dataArr[i].name == playlist){
+            trackIDs = dataArr[i].trackIDs;
+            matchingPlaylist = true;
+        }
+    }
+    if(matchingPlaylist){
+        res.send(trackIDs);
+    }
+    else{
+        res.send('playlist ' + playlist + ' not found');
+    }
+
 })
-*/
 
 
 
@@ -71,25 +169,6 @@ app.post('/lists/hello', (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-// create table
-app.get('/createpoststable', (req, res) => {
-    let sql = 'CREATE TABLE posts(id int AUTO_INCREMENT, title VARCHAR(255), body VARCHAR(255), PRIMARY KEY(id))';
-    db.query(sql, (err, result) => {
-        if(err) throw err;
-        console.log(result);
-        res.send('posts table created');
-    })
-})
 
 // search for tracks by track title
 csv().fromFile(tracksCSV)

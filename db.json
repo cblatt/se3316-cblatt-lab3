@@ -18,5 +18,162 @@
       ]
     }
   ],
-  "lists": []
+  "lists": [
+    {
+      "list 2": [
+        {
+          "trackIDs": [
+            1,
+            14,
+            27,
+            36
+          ],
+          "title": "low db is awesome"
+        }
+      ]
+    },
+    {
+      "list 2": [
+        {
+          "trackIDs": [
+            1,
+            14,
+            27,
+            36
+          ],
+          "title": "low db is awesome"
+        }
+      ]
+    },
+    {
+      "list 2": [
+        {
+          "trackIDs": [
+            1,
+            14,
+            27,
+            36
+          ],
+          "title": "low db is awesome"
+        }
+      ]
+    },
+    {
+      "list 2": [
+        {
+          "trackIDs": [
+            1,
+            14,
+            27,
+            36
+          ],
+          "title": "low db is awesome"
+        }
+      ]
+    },
+    {
+      "list 2": [
+        {
+          "trackIDs": [
+            1,
+            14,
+            27,
+            36
+          ],
+          "title": "low db is awesome"
+        }
+      ]
+    },
+    {
+      "list 2": [
+        {
+          "trackIDs": [
+            1,
+            14,
+            27,
+            36
+          ],
+          "title": "low db is awesome"
+        }
+      ]
+    },
+    {
+      "list 5": [
+        {
+          "name": "list 12",
+          "trackIDs": [
+            1,
+            14,
+            46,
+            88
+          ]
+        }
+      ]
+    },
+    {
+      "name": "list 12",
+      "trackIDs": [
+        1,
+        14,
+        46,
+        88
+      ]
+    },
+    {
+      "name": "list 12",
+      "trackIDs": [
+        1,
+        14,
+        46,
+        88
+      ]
+    },
+    {
+      "name": "list 12",
+      "trackIDs": [
+        1,
+        14,
+        46,
+        88
+      ]
+    },
+    {
+      "name": "list 12",
+      "trackIDs": [
+        1,
+        14,
+        46,
+        88
+      ]
+    }
+  ],
+  "playlists": [
+    {
+      "name": "list 12",
+      "trackIDs": [
+        10,
+        60,
+        81,
+        103
+      ]
+    },
+    {
+      "name": "list 14",
+      "trackIDs": [
+        1,
+        14,
+        46,
+        88
+      ]
+    },
+    {
+      "name": "list 17",
+      "trackIDs": [
+        1,
+        14,
+        46,
+        88
+      ]
+    }
+  ]
 }
