@@ -1,0 +1,22 @@
+{
+  "notes": [
+    {
+      "text": "hello express js with low db"
+    },
+    {
+      "text": "hello express js with low db"
+    },
+    {
+      "text": "hello express js with low db"
+    },
+    {
+      "list 1": [
+        {
+          "id": 1,
+          "title": "low db is awesome"
+        }
+      ]
+    }
+  ],
+  "lists": []
+}

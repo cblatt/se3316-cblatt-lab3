@@ -7,6 +7,16 @@ const csv = require('csvtojson'); // importing csv to json module
 const { type } = require('os');
 const { send } = require('process');
 
+const cors = require('cors');
+const lowdb = require('lowdb');
+const FileSync = require('lowdb/adapters/FileSync');
+const bodyparser = require('body-parser');
+
+
+
+const e = require('express');
+const { rootCertificates } = require('tls');
+
 // setting up front end
 app.use('/', express.static('static'));
 
@@ -16,9 +26,72 @@ var artistsCSV = 'lab3-data/raw_artists.csv';
 var albumsCSV = 'lab3-data/raw_albums.csv';
 var genresCSV = 'lab3-data/genres.csv';
 
+
+
+
+
+const db = lowdb(new FileSync('db.json'));
+
+db.defaults({
+    lists: []
+}).write();
+
+app.use(cors());
+app.use(bodyparser.json());
+
+// here were getting the lists array (array of json objects)
+app.get('/lists', (req, res) => {
+    const data = db.get('lists').value();
+    return res.json(data);
+});
+
+app.post('/lists/new', (req, res) => {
+    const data = db.get('lists');
+    const list = req.body;
+    db.data.push(list).write()
+    res.json({success: true})
+})
+// .write() saves your stuff to the file
+
+/*
+app.post('/lists/hello', (req, res) => {
+    const data = db.get('lists');
+    const list = req.body;
+    db.data.push(list).write();
+    res.json({success: true});
+    
+})
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// create table
+app.get('/createpoststable', (req, res) => {
+    let sql = 'CREATE TABLE posts(id int AUTO_INCREMENT, title VARCHAR(255), body VARCHAR(255), PRIMARY KEY(id))';
+    db.query(sql, (err, result) => {
+        if(err) throw err;
+        console.log(result);
+        res.send('posts table created');
+    })
+})
+
 // search for tracks by track title
-// IM GONNA MAKE THIS ONLY SHOW THE TRACK NAMES THAT ARE FOUND IN THE SEARCH
-// SHOULD IT SHOW ALL OF THE INFO FOR THE TRACK? OR JUST THE TRACK NAMES THAT MATCH THE SEARCH?
 csv().fromFile(tracksCSV)
 .then((trackNames) => {
     
@@ -226,8 +299,6 @@ csv().fromFile(tracksCSV)
         }
     })
 });
-
-
 
 // print a message to indicate the app has started and which port the app is listening on
 app.listen(port, () => {
