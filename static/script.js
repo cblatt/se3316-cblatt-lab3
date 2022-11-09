@@ -315,6 +315,59 @@ document.getElementById('getTrackIDsBtn').addEventListener('click', getListTrack
 
 
 
+// get all track info for a given list
+
+var list = document.getElementById('list');
+
+function getListInfo(){
+
+    fetch('/playlists/allInfo/' + document.getElementById('displayListTextField').value, {
+        method: 'GET',
+        headers: {'Content-type': 'application/json'}
+    })
+    .then(res => {
+        if(res.ok){
+            res.text()
+            .then(data => {
+
+                var listInfoArr = data.split(';'); // this will make array of strings with the list info
+                
+                
+
+                for(var i=0; i<listInfoArr.length; i++){
+                    list.appendChild(document.createTextNode(listInfoArr[i]));
+                    list.appendChild(document.createElement('br'));
+                }
+
+
+
+                
+
+
+            })
+            .catch(err => alert('failed to get json object'))
+        }
+        else{
+        }
+    })
+    .catch()
+
+}
+
+// clear list
+function clearList(){
+    while(list.firstChild){
+        list.removeChild(list.firstChild);
+    }
+}
+
+document.getElementById('displayListButton').addEventListener('click', clearList);
+document.getElementById('displayListButton').addEventListener('click', getListInfo);
+
+
+
+
+
 
 
 

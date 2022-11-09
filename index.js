@@ -161,6 +161,77 @@ app.get('/playlists/trackIDs/:playlist', (req, res) => {
 
 })
 
+csv().fromFile(tracksCSV)
+.then((tracks) => {
+
+    app.get('/playlists/allInfo/:playlist', (req, res) => {
+        const data = db.get('playlists');
+        const dataArr = data.value();
+
+        const playlist = req.params.playlist; // storing the playlist for which we want all the info
+
+        var trackIDs = [];
+        var trackNames = [];
+        var artistNames = [];
+        var albumNames = [];
+        var lengths = [];
+
+        var matchingPlaylist;
+
+        // this fills the track IDs array with the matching track IDs for the given playlist name
+        for(var i=0; i<dataArr.length; i++){
+            if(dataArr[i].name == playlist){
+                trackIDs = dataArr[i].trackIDs;
+                matchingPlaylist = true;
+            }
+        }
+
+        
+        for(var i=0; i<trackIDs.length; i++){
+            var track = tracks.find(tr => tr.track_id == trackIDs[i]);
+            if(track){
+                trackNames.push(track.track_title);
+                artistNames.push(track.artist_name);
+                albumNames.push(track.album_title);
+                lengths.push(track.track_duration);
+            }
+            else{
+                trackNames.push('n/a');
+                artistNames.push('n/a');
+                albumNames.push('n/a');
+                lengths.push('n/a');
+            }
+        }
+        
+        var trackInfo = [];
+        trackInfo.push(trackNames);
+        trackInfo.push(artistNames);
+        trackInfo.push(albumNames);
+        trackInfo.push(lengths);
+
+        var listInfo = '';
+
+        for(var i=0; i<trackNames.length; i++){
+            listInfo += 'Track Title: ' + trackNames[i] + ', ' + 'Artist Name: ' + artistNames[i] + ', ' + 'Album Title: ' + albumNames[i] + ', ' + 'Length: ' + lengths[i] + ';';
+        }
+
+        res.send(listInfo);
+
+    })
+
+});
+
+// get names of all lists, number of tracks in each list, and total duration of each list
+csv().fromFile(tracksCSV)
+.then((tracks2) => {
+
+        app.get('/playlists/allLists', (req, res) => {
+            
+        })
+
+
+
+});
 
 
 
@@ -222,7 +293,7 @@ csv().fromFile(artistsCSV)
         }
 
     })
-})
+});
 
 // search for albums by album name
 csv().fromFile(albumsCSV)
