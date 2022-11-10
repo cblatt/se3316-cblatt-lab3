@@ -12,8 +12,6 @@ const lowdb = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 const bodyparser = require('body-parser');
 
-
-
 const e = require('express');
 const { rootCertificates } = require('tls');
 
@@ -25,10 +23,6 @@ var tracksCSV = 'lab3-data/raw_tracks.csv';
 var artistsCSV = 'lab3-data/raw_artists.csv';
 var albumsCSV = 'lab3-data/raw_albums.csv';
 var genresCSV = 'lab3-data/genres.csv';
-
-
-
-
 
 const db = lowdb(new FileSync('db.json'));
 
@@ -66,12 +60,12 @@ app.post('/playlists/new', (req, res) => {
 
     // if there is a matching playlist name, send playlist already exists
     if(matchingName){
-        res.send('playlist name already exists')
+        res.send('playlist name already exists: ' + newPlaylist.name)
     }
     // if there is no matching playlist name, add the new playlist to the array, and send new playlist created
     else{
         data.push(newPlaylist).write();
-        res.send('new playlist created');
+        res.send('new playlist created: ' + newPlaylist.name);
     }
 });
 
@@ -86,7 +80,6 @@ app.put('/playlists/addTracks/:playlist', (req, res) => {
     
     var matchingName;
 
-    
     // looping through the existing playlists
     for(var i=0; i<dataArr.length; i++){
         // if a matching playlist is found, add the new tracks to the playlist
@@ -101,10 +94,10 @@ app.put('/playlists/addTracks/:playlist', (req, res) => {
 
     // if there is a matching playlist, add the tracks to the playlist
     if(matchingName){
-        res.send('playlist ' + playlist + ' updated');
+        res.send('playlist updated: ' + playlist);
     }
     else{
-        res.send('playlist ' + playlist + ' not found');
+        res.send('playlist not found: ' + playlist);
     }
 });
 
@@ -131,7 +124,7 @@ app.delete('/playlists/delete/:playlist', (req, res) => {
     }
     // if no match is found, send playlist not found
     else{
-        res.send('playlist' + playlist + ' not found');
+        res.send('playlist not found: ' + playlist);
     }
 });
 
@@ -156,7 +149,7 @@ app.get('/playlists/trackIDs/:playlist', (req, res) => {
         res.send(trackIDs);
     }
     else{
-        res.send('playlist ' + playlist + ' not found');
+        res.send('playlist not found: ' + playlist);
     }
 
 })
@@ -222,8 +215,6 @@ csv().fromFile(tracksCSV)
 });
 
 // get names of all lists, number of tracks in each list, and total duration of each list
-
-
 app.get('/playlists/allLists', (req, res) => {
             
     const data = db.get('playlists');
@@ -238,15 +229,6 @@ app.get('/playlists/allLists', (req, res) => {
     res.send(listsInfo)
 
 })
-
-
-
-
-
-
-
-
-
 
 // search for tracks by track title
 csv().fromFile(tracksCSV)

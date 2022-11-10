@@ -207,9 +207,7 @@ function createList(){
             res.text()
             .then(data => {
 
-
-                alert(data);
-
+                searchList.appendChild(document.createTextNode(data));
 
             })
             .catch(err => alert('failed to get json object'))
@@ -221,6 +219,7 @@ function createList(){
     .catch()
 
 }
+document.getElementById('createListBtn').addEventListener('click', clearSearchResults); 
 document.getElementById('createListBtn').addEventListener('click', createList);
 
 // save a list of track IDs to a given list
@@ -242,9 +241,7 @@ function addToList(){
             res.text()
             .then(data => {
 
-
-                alert(data);
-
+                searchList.appendChild(document.createTextNode(data));
 
             })
             .catch(err => alert('failed to get json object'))
@@ -256,7 +253,8 @@ function addToList(){
     .catch()
 
 }
-document.getElementById('addTracksBtn').addEventListener('click', addToList);
+document.getElementById('addTracksBtn').addEventListener('click', clearSearchResults); 
+document.getElementById('addTracksBtn').addEventListener('click', addToList); 
 
 // delete a list by name
 function deleteList(){
@@ -269,9 +267,7 @@ function deleteList(){
             res.text()
             .then(data => {
 
-
-                alert(data);
-
+                searchList.appendChild(document.createTextNode(data));
 
             })
             .catch(err => alert('failed to get json object'))
@@ -282,7 +278,8 @@ function deleteList(){
     })
     .catch()
 }
-document.getElementById('deleteListBtn').addEventListener('click', deleteList);
+document.getElementById('deleteListBtn').addEventListener('click', clearSearchResults); 
+document.getElementById('deleteListBtn').addEventListener('click', deleteList); 
 
 // get the track IDs for a given list
 function getListTrackIDs(){
@@ -295,9 +292,7 @@ function getListTrackIDs(){
             res.text()
             .then(data => {
 
-
-                alert(data);
-
+                searchList.appendChild(document.createTextNode(data));
 
             })
             .catch(err => alert('failed to get json object'))
@@ -309,10 +304,8 @@ function getListTrackIDs(){
     .catch()
 
 }
-document.getElementById('getTrackIDsBtn').addEventListener('click', getListTrackIDs);
-
-
-
+document.getElementById('getTrackIDsBtn').addEventListener('click', clearSearchResults); 
+document.getElementById('getTrackIDsBtn').addEventListener('click', getListTrackIDs); 
 
 
 // get all track info for a given list
@@ -332,18 +325,10 @@ function getListInfo(){
 
                 var listInfoArr = data.split(';'); // this will make array of strings with the list info
                 
-                
-
                 for(var i=0; i<listInfoArr.length; i++){
                     list.appendChild(document.createTextNode(listInfoArr[i]));
                     list.appendChild(document.createElement('br'));
                 }
-
-
-
-                
-
-
             })
             .catch(err => alert('failed to get json object'))
         }
@@ -377,18 +362,11 @@ function getAllLists(){
             .then(data => {
 
                 var allListsArr = data.split(';'); // this will make array of strings with the list info
-                
-                
 
                 for(var i=0; i<allListsArr.length; i++){
                     searchList.appendChild(document.createTextNode(allListsArr[i]));
                     searchList.appendChild(document.createElement('br'));
                 }
-
-
-
-                
-
 
             })
             .catch(err => alert('failed to get json object'))
